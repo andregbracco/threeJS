@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello cube</title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.144.0/three.min.js" integrity="sha512-a+99cBAt+ou5bThiz5wJeuvXSrZVqZctMU5L8MWaLEc3PB+DPWMK3UycRong0zWYyhavY8HT0YyB/jtJD1S/yQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+<script>
+    //crear escena
+    var scene= new THREE.Scene();
+
+    //puede recibir el color como hexa, rgb, color entre comillas
+    scene.background = new THREE.Color()
+    //neblina
+    scene.fog = new THREE.Fog(0x7645c, 0.1, 8)
+    var loader = new THREE.TextureLoader();
+    // load: recibe imagen y funcion que usa esa imagen
+    loader.load("./living.jpeg", function(texture){
+        scene.background = texture
+    });
+
+    //agregar camara
+    var camera= new THREE.PerspectiveCamera(
+        //perspectiva
+        75,
+        //aspecto igual al ancho divida el alto
+        window.innerWidth/window.innerHeight,
+        0.1,
+        2000
+    );
+
+    // var newcamera = new THREE.PerspectiveCamera(
+    //     75,
+    //     //aspecto igual al ancho divida el alto
+    //     window.innerWidth/window.innerHeight,
+    //     3,
+    //     10
+    // )
+
+    // var helper = new THREE.CamaraHelper(newcamera);
+
+    // scene.add(helper);
+    //agregar el renderer
+    var renderer = new THREE.WebGLRenderer();
+    //seteamos un tamano, alto y ancho de la ventana del navegador
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+
+    //agregamos un cubo 
+    var geometry = new THREE.BoxGeometry();
+    var material = new THREE.MeshBasicMaterial({
+        color: 0x6610f2,
+        wireframe: true
+    });
+    var cube = new THREE.Mesh( geometry, material );
+    
+    camera.position.z = 5;
+    scene.add(cube);
+
+    //agregar la escena y la camara al render
+    //renderer.render(scene, camera);
+
+    //animacion del cubo
+    var i =0;
+    var animate = function() {
+        requestAnimationFrame(animate)
+        // camera.lookAt(newcamera.position);
+
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        // camera.position.x = Math.cos(i) * 30
+        // camera.position.z = Math.sin(i) * 30
+        i+= 0.01;
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+</script>
+
+
+</body>
+</html>
